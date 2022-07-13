@@ -1,0 +1,54 @@
+﻿<v:NavigationPage x:Class="Gym.WPF.Views.Users.Login"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:v="clr-namespace:Gym.WPF.Views"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:vm="clr-namespace:Gym.MVVM.ViewModels.Users;assembly=Gym.MVVM"
+      xmlns:common="clr-namespace:Gym.WPF.Views.Common"
+      xmlns:calc="clr-namespace:CalcBinding;assembly=CalcBinding"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+      xmlns:behaviors="clr-namespace:Gym.WPF.Infrastructure.Behaviors"
+      d:DataContext="{d:DesignInstance Type=vm:LoginViewModel}"
+      mc:Ignorable="d"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Login">
+
+  <common:LoadableLayout IsTabStop="False" IsBusy="{Binding IsBusy}">
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Background="{StaticResource BackgroundBrush}" Width="400">
+      <StackPanel VerticalAlignment="Center" Width="250" Margin="0, 40">
+        <common:InputControl
+          Title="User Name"
+          Value="{Binding Model.Username, NotifyOnValidationError=False, ValidatesOnNotifyDataErrors=False, UpdateSourceTrigger=PropertyChanged}"
+          FocusManager.FocusedElement="{Binding RelativeSource={RelativeSource Self}}" />
+
+        <StackPanel Margin="{StaticResource InputVerticalMargin}">
+          <Label Target="{Binding ElementName=PasswordBox}" Padding="0">
+            <i:Interaction.Behaviors>
+              <behaviors:LabelFocusBehavior />
+            </i:Interaction.Behaviors>
+            <TextBlock Text="Password" Style="{StaticResource FormTitle}"/>
+          </Label>
+          <PasswordBox
+            Height="{StaticResource InputHeight}"
+            Padding="{StaticResource InputPadding}"
+            VerticalContentAlignment="Center"
+            x:Name="PasswordBox"
+            PasswordChanged="PasswordBox_PasswordChanged"/>
+        </StackPanel>
+
+        <TextBlock
+          Style="{StaticResource NormalText}"
+          Foreground="{StaticResource DangerousBrush}"
+          Text="{Binding ErrorMessage}"
+          TextWrapping="Wrap"
+          Visibility="{calc:Binding 'ErrorMessage != null'}"/>
+
+        <Button
+          IsDefault="True"
+          Content="Login"
+          Command="{Binding LoginCommand}"/>
+      </StackPanel>
+    </Grid>
+  </common:LoadableLayout>
+</v:NavigationPage>

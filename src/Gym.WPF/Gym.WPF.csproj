@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+        <CodeAnalysisRuleSet>..\..\tools\Saritasa.ruleset</CodeAnalysisRuleSet>
+      <StartupObject>Gym.WPF.Program</StartupObject>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Gym.DomainServices\Gym.DomainServices.csproj" />
+      <ProjectReference Include="..\Gym.Domain\Gym.Domain.csproj" />
+      <ProjectReference Include="..\Gym.Infrastructure.Abstractions\Gym.Infrastructure.Abstractions.csproj" />
+      <ProjectReference Include="..\Gym.Infrastructure.Common\Gym.Infrastructure.Common.csproj" />
+      <ProjectReference Include="..\Gym.Infrastructure.DataAccess\Gym.Infrastructure.DataAccess.csproj" />
+      <ProjectReference Include="..\Gym.MVVM\Gym.MVVM.csproj" />
+      <ProjectReference Include="..\Gym.UseCases.Common\Gym.UseCases.Common.csproj" />
+      <ProjectReference Include="..\Gym.UseCases\Gym.UseCases.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+      <PackageReference Include="Bogus" Version="34.0.2" />
+      <PackageReference Include="CalcBinding" Version="2.5.2" />
+      <PackageReference Include="Fody" Version="6.6.3">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="4.0.1" />
+      <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.0-preview.6.22329.4" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0-preview.6.22324.4" />
+      <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0-preview.6.22324.4" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="7.0.0-preview.6.22324.4" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0-preview.6.22324.4" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0-preview.6.22324.4" />
+      <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+      <PackageReference Include="PropertyChanged.Fody" Version="3.4.1" />
+      <PackageReference Include="Saritasa.Tools.Domain" Version="0.8.2" />
+      <PackageReference Include="StyleCop.Analyzers.Unstable" Version="1.2.0.435">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="ToastNotifications.Messages.Net5" Version="3.0.1" />
+      <PackageReference Include="ToastNotifications.Net5" Version="3.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="appsettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+</Project>

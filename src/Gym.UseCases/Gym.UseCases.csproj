@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <CodeAnalysisRuleSet>..\..\tools\Saritasa.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Gym.DomainServices\Gym.DomainServices.csproj" />
+      <ProjectReference Include="..\Gym.Domain\Gym.Domain.csproj" />
+      <ProjectReference Include="..\Gym.Infrastructure.Abstractions\Gym.Infrastructure.Abstractions.csproj" />
+      <ProjectReference Include="..\Gym.UseCases.Common\Gym.UseCases.Common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="11.0.1" />
+      <PackageReference Include="MediatR" Version="10.0.1" />
+      <PackageReference Include="Saritasa.Tools.Domain" Version="0.8.2" />
+      <PackageReference Include="Saritasa.Tools.EFCore5" Version="0.8.2" />
+      <PackageReference Include="StyleCop.Analyzers.Unstable" Version="1.2.0.435">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="User" />
+    </ItemGroup>
+
+</Project>

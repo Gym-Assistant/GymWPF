@@ -1,0 +1,29 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <Color x:Key="PrimaryColor">#164094</Color>
+  <Color x:Key="PrimaryDarkColor">#2d374c</Color>
+  <Color x:Key="PrimaryLightColor">#8798AD</Color>
+  <Color x:Key="PrimaryForegroundColor">#DDD</Color>
+
+  <SolidColorBrush x:Key="PageBackgroundBrush">#eff3f4</SolidColorBrush>
+  <SolidColorBrush x:Key="BackgroundBrush">#FFF</SolidColorBrush>
+
+  <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}"/>
+  <SolidColorBrush x:Key="PrimaryDarkBrush" Color="{StaticResource PrimaryDarkColor}"/>
+  <SolidColorBrush x:Key="PrimaryLightBrush" Color="{StaticResource PrimaryLightColor}"/>
+  <SolidColorBrush x:Key="PrimaryForegroundBrush" Color="{StaticResource PrimaryForegroundColor}"/>
+  <SolidColorBrush x:Key="SecondaryBrush" Color="#404040"/>
+  <SolidColorBrush x:Key="ControlDefaultBrush">#999999</SolidColorBrush>
+
+  <SolidColorBrush x:Key="TextBrush">#444</SolidColorBrush>
+  <SolidColorBrush x:Key="LightTextBrush">#888</SolidColorBrush>
+  <SolidColorBrush x:Key="IconBrush">#999</SolidColorBrush>
+  <SolidColorBrush x:Key="IconAccentBrush">#555</SolidColorBrush>
+  <SolidColorBrush x:Key="SeparatorBrush">#D4D4D4</SolidColorBrush>
+  <SolidColorBrush x:Key="LoadingBackgroundBrush">#33000000</SolidColorBrush>
+  <SolidColorBrush x:Key="DropDownBackgroundBrush">#FAFAFA</SolidColorBrush>
+
+  <SolidColorBrush x:Key="DangerousBrush">#CC0000</SolidColorBrush>
+  <SolidColorBrush x:Key="SuccessBrush">#1CBD28</SolidColorBrush>
+</ResourceDictionary>
