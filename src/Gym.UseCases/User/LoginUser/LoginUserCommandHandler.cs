@@ -1,34 +1,64 @@
+using Gym.Domain;
+using Gym.Infrastructure.Abstractions.Interfaces;
 using MediatR;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 using Saritasa.Tools.Domain.Exceptions;
 
-namespace Gym.UseCases.User.LoginUser
+namespace Gym.UseCases.User.LoginUser;
+
+/// <summary>
+/// Handler for <see cref="LoginUserCommand" />.
+/// </summary>
+internal class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginUserCommandResult>
 {
+    private const string InvalidCredentialsErrorMessage = "Email or password is incorrect.";
+    private readonly IAuthorizationService authorizationService;
+    private readonly IAppDbContext dbContext;
+
     /// <summary>
-    /// Handler for <see cref="LoginUserCommand" />.
+    /// Constructor.
     /// </summary>
-    internal class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginUserCommandResult>
+    public LoginUserCommandHandler(IAuthorizationService authorizationService, IAppDbContext dbContext)
     {
-        private const string InvalidCredentialsErrorMessage = "Email or password is incorrect.";
+        this.authorizationService = authorizationService;
+        this.dbContext = dbContext;
+    }
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="signInManager">Sign in manager.</param>
-        /// <param name="tokenService">Token service.</param>
-        /// <param name="logger">Logger.</param>
-        public LoginUserCommandHandler()
+    /// <inheritdoc />
+    public async Task<LoginUserCommandResult> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+    {
+        Guid? userId = null;
+        try
         {
-        }
-
-        /// <inheritdoc />
-        public async Task<LoginUserCommandResult> Handle(LoginUserCommand request, CancellationToken cancellationToken)
-        {
-            Console.WriteLine("asdas");
-            return new LoginUserCommandResult
+            string token = await authorizationService.AuthenticateAsync(request.Email, request.Password);
+            userId = await authorizationService.GetMeAsync();
+            var user = new LoggedUsers()
             {
-                UserId = 0,
+                Id = userId.Value,
+                Email = request.Email,
+                Jwt = token,
+                JwtUpdatedAt = DateTime.UtcNow
             };
+            bool userExist = await dbContext.Users.AnyAsync(user => user.Id == userId, cancellationToken);
+            if (!userExist)
+            {
+                dbContext.Users.Add(user);
+            }
+            else
+            {
+                dbContext.Users.Update(user);
+            }
+
+            await dbContext.SaveChangesAsync(cancellationToken);
         }
+        catch (InfrastructureException exception)
+        {
+            throw new ValidationException(InvalidCredentialsErrorMessage);
+        }
+
+        return new LoginUserCommandResult
+        {
+            UserId = userId.Value,
+        };
     }
 }

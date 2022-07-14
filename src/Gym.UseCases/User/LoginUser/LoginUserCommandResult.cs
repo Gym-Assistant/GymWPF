@@ -1,13 +1,12 @@
-namespace Gym.UseCases.User.LoginUser
+namespace Gym.UseCases.User.LoginUser;
+
+/// <summary>
+/// Represents user login attempt to system.
+/// </summary>
+public class LoginUserCommandResult
 {
     /// <summary>
-    /// Represents user login attempt to system.
+    /// Logged user id (if success).
     /// </summary>
-    public class LoginUserCommandResult
-    {
-        /// <summary>
-        /// Logged user id (if success).
-        /// </summary>
-        public int UserId { get; set; }
-    }
+    public Guid UserId { get; set; }
 }

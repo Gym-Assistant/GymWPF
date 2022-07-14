@@ -1,87 +1,93 @@
 ﻿using Gym.MVVM.ServiceAbstractions.Navigation;
+using Gym.MVVM.ViewModels.Main;
 using Gym.MVVM.ViewModels.Users.Models;
 using Gym.UseCases.User.LoginUser;
+using Gym.UseCases.User.RestoreToken;
 using MediatR;
 using Microsoft.Toolkit.Mvvm.Input;
 using Saritasa.Tools.Domain.Exceptions;
 
-namespace Gym.MVVM.ViewModels.Users
+namespace Gym.MVVM.ViewModels.Users;
+
+public class LoginViewModel : BaseViewModel
 {
-    public class LoginViewModel : BaseViewModel
+    private readonly INavigationService navigationService;
+    private readonly IMediator mediator;
+
+    /// <inheritdoc/>
+    public LoginModel Model { get; private set; }
+
+    /// <summary>
+    /// Login command.
+    /// </summary>
+    public AsyncRelayCommand LoginCommand { get; }
+
+    /// <summary>
+    /// Error message.
+    /// </summary>
+    public string ErrorMessage { get; private set; }
+
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    public LoginViewModel(
+        INavigationService navigationService,
+        IMediator mediator)
     {
-        private readonly INavigationService navigationService;
-        private readonly IMediator mediator;
+        this.navigationService = navigationService;
+        this.mediator = mediator;
 
-        /// <inheritdoc/>
-        public LoginModel Model { get; private set; }
+        LoginCommand = new AsyncRelayCommand(LoginCommandExecute);
+        Model = new();
+        Model.PropertyChanged += ModelPropertyChanged;
+    }
 
-        /// <summary>
-        /// Login command.
-        /// </summary>
-        public AsyncRelayCommand LoginCommand { get; }
-
-        /// <summary>
-        /// Error message.
-        /// </summary>
-        public string ErrorMessage { get; private set; }
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        public LoginViewModel(
-            INavigationService navigationService,
-            IMediator mediator)
+    /// <inheritdoc/>
+    public override async Task LoadAsync()
+    {
+        IsBusy = true;
+        var isUserRestored = await mediator.Send(new RestoreTokenCommand());
+        if (isUserRestored)
         {
-            this.navigationService = navigationService;
-            this.mediator = mediator;
-
-            LoginCommand = new AsyncRelayCommand(LoginCommandExecute);
-            Model = new();
-            Model.PropertyChanged += ModelPropertyChanged;
+            var discardTask = navigationService.OpenAsFirstAsync<MainPageViewModel>();
         }
 
-        /// <inheritdoc/>
-        public override async Task LoadAsync()
+        IsBusy = false;
+    }
+
+    private void ModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        ErrorMessage = null;
+    }
+
+    private async Task LoginCommandExecute()
+    {
+        Model.Touch();
+
+        if (!Model.IsValid)
         {
-            await base.LoadAsync();
+            ErrorMessage = "Please enter user name and password.";
+            return;
+        }
+        try
+        {
+            IsBusy = true;
+            var res = await mediator.Send(new LoginUserCommand()
+            {
+                Email = Model.Username,
+                Password = Model.Password,
+            });
+        }
+        catch (ValidationException e)
+        {
+            ErrorMessage = e.Message;
+            return;
+        }
+        finally
+        {
+            IsBusy = false;
         }
 
-        private void ModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            ErrorMessage = null;
-        }
-
-        private async Task LoginCommandExecute()
-        {
-            Model.Touch();
-
-            if (!Model.IsValid)
-            {
-                ErrorMessage = "Please enter user name and password.";
-                return;
-            }
-
-            try
-            {
-                IsBusy = true;
-                var res = await mediator.Send(new LoginUserCommand()
-                {
-                    Email = Model.Username,
-                    Password = Model.Password,
-                });
-                await Task.Delay(5000);
-            }
-            catch (ValidationException e)
-            {
-                ErrorMessage = e.Message;
-                return;
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-
-            // var discardTask = navigationService.OpenAsFirstAsync<ProductListViewModel>();
-        }
+        var discardTask = navigationService.OpenAsFirstAsync<MainPageViewModel>();
     }
 }

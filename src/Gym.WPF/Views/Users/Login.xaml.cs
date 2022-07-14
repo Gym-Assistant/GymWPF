@@ -1,28 +1,27 @@
 ﻿using Gym.MVVM.ViewModels.Users;
 using Gym.WPF.Infrastructure.Navigation;
 
-namespace Gym.WPF.Views.Users
+namespace Gym.WPF.Views.Users;
+
+/// <summary>
+/// Interaction logic for Login.xaml.
+/// </summary>
+[UsesViewModel(typeof(LoginViewModel))]
+public partial class Login : NavigationPage
 {
     /// <summary>
-    /// Interaction logic for Login.xaml.
+    /// Constructor.
     /// </summary>
-    [UsesViewModel(typeof(LoginViewModel))]
-    public partial class Login : NavigationPage
+    public Login()
     {
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        public Login()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        private void PasswordBox_PasswordChanged(object sender, System.Windows.RoutedEventArgs e)
-        {
-            var dataContext = (LoginViewModel)DataContext;
+    private void PasswordBox_PasswordChanged(object sender, System.Windows.RoutedEventArgs e)
+    {
+        var dataContext = (LoginViewModel)DataContext;
 
-            // The `Password Box` control does not have bindable `password` property.
-            dataContext.Model.Password = PasswordBox.Password;
-        }
+        // The `Password Box` control does not have bindable `password` property.
+        dataContext.Model.Password = PasswordBox.Password;
     }
 }

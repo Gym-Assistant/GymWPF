@@ -29,5 +29,6 @@ internal static class DesktopModule
         AutoMapperModule.Register(services);
         DatabaseModule.Register(services, configuration);
         DomainModule.Register(services);
+        InfrastructureModule.Register(services, configuration);
     }
 }

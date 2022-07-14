@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Gym.UseCases.User;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Gym.WPF.Infrastructure.DependencyInjection;
 
@@ -13,6 +14,6 @@ public class AutoMapperModule
     /// <param name="services">Services.</param>
     public static void Register(IServiceCollection services)
     {
-        // services.AddAutoMapper() TODO add mapping profile.
+        services.AddAutoMapper(typeof(UserMappingProfile));
     }
 }
